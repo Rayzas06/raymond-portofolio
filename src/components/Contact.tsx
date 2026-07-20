@@ -197,7 +197,12 @@ export default function Contact() {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <SocialLink href={`mailto:${profile.email}`} icon={contactIcons.gmail} label="Mail" />
+        <SocialLink
+          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}`}
+          icon={contactIcons.gmail}
+          label="Mail"
+          external
+        />
         <SocialLink href={profile.github} icon={contactIcons.github} label="GitHub" external />
         <SocialLink href={profile.linkedin} icon={contactIcons.linkedin} label="LinkedIn" external />
         <SocialLink href={`https://wa.me/${waNumber}`} icon={contactIcons.phone} label="WhatsApp" external />
