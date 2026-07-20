@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-scroll";
 import { Menu, X } from "lucide-react";
 import { useScrollSpy } from "../hooks/useScrollSpy";
@@ -11,9 +11,21 @@ const NAV = [
   { id: "contact", label: "Contact" },
 ];
 
+const SCROLL_DURATION = 400;
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const active = useScrollSpy(NAV.map((n) => n.id));
+  const scrollSpyActive = useScrollSpy(NAV.map((n) => n.id));
+  const [manualActive, setManualActive] = useState<string | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const active = manualActive ?? scrollSpyActive;
+
+  const handleClick = (id: string) => {
+    setManualActive(id);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setManualActive(null), SCROLL_DURATION + 100);
+  };
 
   return (
     <>
@@ -24,8 +36,9 @@ export default function Navbar() {
               key={n.id}
               to={n.id}
               smooth
-              duration={500}
+              duration={SCROLL_DURATION}
               offset={-80}
+              onClick={() => handleClick(n.id)}
               className={`relative text-sm px-4 py-2 rounded-full cursor-pointer transition-all duration-200 ease-out ${
                 active === n.id
                   ? "bg-accent text-[#1a1200] font-semibold"
@@ -56,9 +69,12 @@ export default function Navbar() {
                 key={n.id}
                 to={n.id}
                 smooth
-                duration={500}
+                duration={SCROLL_DURATION}
                 offset={-40}
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  handleClick(n.id);
+                  setOpen(false);
+                }}
                 className="text-base py-3 border-b border-border text-textSoft cursor-pointer transition-colors duration-200 ease-out hover:text-accent"
               >
                 {n.label}
