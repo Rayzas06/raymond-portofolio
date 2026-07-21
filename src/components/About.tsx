@@ -34,7 +34,6 @@ export default function About() {
                 <div className="text-sm text-textSoft">{education.degree}. Cumulative GPA {education.gpa}.</div>
               </div>
             </div>
-
             {experience.map((e) => (
               <div key={e.title} className="flex gap-3">
                 <div className="w-2 h-2 rounded-full bg-accent mt-1.5 flex-shrink-0" />
